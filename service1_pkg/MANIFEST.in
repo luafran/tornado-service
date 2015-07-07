@@ -1,0 +1,2 @@
+include requirements.txt
+recursive-include prjname/common/json_schema/schemas *
