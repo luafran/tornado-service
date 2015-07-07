@@ -16,7 +16,7 @@ REQS = [str(ir.req) for ir in PACKAGE_REQS]
 if __name__ == "__main__":
     setuptools.setup(
         name="prjname-common",
-        version="0.1",
+        version="0.1.0",
         description="Project Name Common",
         author="The Company",
         namespace_packages=['prjname'],
