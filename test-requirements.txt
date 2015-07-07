@@ -1,0 +1,9 @@
+coverage>=3.7.1
+ipdb
+mock>=1.0.1
+radon>=0.5.1
+pygments>=1.6
+testscenarios>=0.4
+xmlrunner>=1.7.4
+mechanize>=0.2.5
+requests>=2.3.0

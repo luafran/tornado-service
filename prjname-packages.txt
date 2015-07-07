@@ -1,0 +1,2 @@
+-e common_pkg
+-e service1_pkg

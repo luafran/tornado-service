@@ -1,0 +1,13 @@
+.tox
+*.pyc
+*.egg-info
+dist/*
+*/dist/*
+continuous_integration/reports/*
+.coverage*
+tags
+*_pkg/global-requirements.txt
+*.log
+.idea/
+*.prof
+fitnesse_tests/FitNesseRoot/ErrorLogs/*
