@@ -8,6 +8,7 @@ APPLICATION_ID = '1'
 
 AUTO_RELOAD = False
 ENFORCE_POLICIES = True
+STATS_ENABLED = False
 
 JWT_TOKEN_NOT_BEFORE_TIMEDELTA = datetime.timedelta(minutes=1)
 
