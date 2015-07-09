@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Luciano Afranllie <luafran@gmail.com>
 
-ENV http_proxy=http://proxy-us.intel.com:911 https_proxy=http://proxy-us.intel.com:911
+# ENV http_proxy=http://proxy-us.intel.com:911 https_proxy=http://proxy-us.intel.com:911
 
 LABEL name=tornado-service version=1.0.0
 
