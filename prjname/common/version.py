@@ -5,7 +5,7 @@ UNKNOWN_VERSION = 'UNKNOWN'
 
 
 def _get_distribution_name():
-    return "prjname-common"
+    return "prjname-service1"
 
 
 def get_version():

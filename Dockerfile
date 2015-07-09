@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Luciano Afranllie <luafran@gmail.com>
 
-# ENV http_proxy=http://proxy-us.intel.com:911 https_proxy=http://proxy-us.intel.com:911
+ENV http_proxy=http://proxy-us.intel.com:911 https_proxy=http://proxy-us.intel.com:911
 
 LABEL name=tornado-service version=1.0.0
 
@@ -18,13 +18,9 @@ RUN apt-get update && apt-get install -y \
 # Deploy application
 # RUN mkdir /var/log/tornadoservice/
 COPY ./ /tmp/build/
-WORKDIR /tmp/build/common_pkg
-RUN python setup.py sdist --dist-dir ../dist
-WORKDIR /tmp/build/service1_pkg
-RUN python setup.py sdist --dist-dir ../dist
 WORKDIR /tmp/build
-RUN pip install dist/prjname-common-0.1.0.tar.gz \
-    && pip install dist/prjname-service1-1.0.0.tar.gz \
+RUN python setup.py sdist --dist-dir ./dist
+RUN pip install dist/prjname-service1-1.0.0.tar.gz \
     && rm -rf /tmp/build
 
 # Expose port
