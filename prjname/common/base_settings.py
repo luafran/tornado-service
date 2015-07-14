@@ -4,6 +4,8 @@ Base settings used in all environments
 import datetime
 import os
 
+from prjname.common import settings
+
 APPLICATION_ID = '1'
 
 AUTO_RELOAD = False

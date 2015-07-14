@@ -3,7 +3,7 @@ import importlib
 import itertools
 import os
 
-from miramar.common import exceptions
+from prjname.common import exceptions
 
 
 class SettingsLoader(object):  # pylint: disable=too-few-public-methods
@@ -18,17 +18,15 @@ class SettingsLoader(object):  # pylint: disable=too-few-public-methods
                     mfs_environment_name))
         self._settings_package = settings_package
         self._environment_prefix = environment_prefix
-
         self._settings_modules = []
+
+        self._settings_modules_not_fully_loaded = True
         if not modules_lazy_load:
             self._lazy_module_import()
 
     def _lazy_module_import(self):
         modules = [
-            '{0}.{1}_settings'.format(self._settings_package,
-                                      self._mfs_environment),
             '{0}.base_settings'.format(self._settings_package),
-            'miramar.common.{0}_settings'.format(self._mfs_environment),
             'miramar.common.base_settings']
 
         self._settings_modules = []
@@ -38,13 +36,14 @@ class SettingsLoader(object):  # pylint: disable=too-few-public-methods
                     importlib.import_module(module_name))
             except ImportError:
                 pass
+        self._settings_modules_not_fully_loaded = False
 
     def __getattr__(self, name):
-        setting_value = os.environ.get(
-            "{0}_{1}".format(self._environment_prefix, name.upper()))
+        setting_value = self._convert(os.environ.get(
+            "{0}_{1}".format(self._environment_prefix, name.upper())))
 
         if not setting_value:
-            if not self._settings_modules:
+            if self._settings_modules_not_fully_loaded:
                 self._lazy_module_import()
 
             all_modules = itertools.chain(self._settings_modules)
@@ -82,3 +81,15 @@ class SettingsLoader(object):  # pylint: disable=too-few-public-methods
                         else module.__name__.split('.')[-1])
 
         return dict(settings)
+
+    @staticmethod
+    def _convert(value):
+        if not isinstance(value, basestring):
+            return value
+
+        if value.title() == 'True':
+            return True
+        elif value.title() == 'False':
+            return False
+        else:
+            return value
