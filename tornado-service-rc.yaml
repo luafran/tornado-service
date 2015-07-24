@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: tornado-service
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tornado-service
+    spec:
+      containers:
+      - name: tornado-service
+        image: quay.io/luafran/tornado-service
+        ports:
+        - containerPort: 10001
+        env:
+        - name: MFS_ENV
+          value: kube-test
+        - name: MFS_AUTO_RELOAD
+          value: "False"
