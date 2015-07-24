@@ -1,7 +1,6 @@
 ```shell
 $ kubectl create -f ./tornado-service-rc.yaml
 
-$ kubectl get pods
 $ kubectl get pods -l app=tornado-service -o wide
 NAME                    READY     STATUS    RESTARTS   AGE       NODE
 tornado-service-5337a   1/1       Running   0          16m       ip-172-20-0-102.ec2.internal
