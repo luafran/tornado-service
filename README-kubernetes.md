@@ -1,3 +1,4 @@
+```shell
 $ kubectl create -f ./tornado-service-rc.yaml
 
 $ kubectl get pods
@@ -34,4 +35,4 @@ Address 1: 10.0.0.10 ip-10-0-0-10.ec2.internal
 
 Name:      tornadosvc
 Address 1: 10.0.102.32 ip-10-0-102-32.ec2.internal
-
+`````
