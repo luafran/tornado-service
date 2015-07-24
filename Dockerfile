@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 COPY ./ /tmp/build/
 WORKDIR /tmp/build
 RUN python setup.py sdist --dist-dir ./dist
-RUN pip install dist/prjname-service1-1.0.0.tar.gz \
+RUN pip install dist/prjname-service1-1.1.0.tar.gz \
     && rm -rf /tmp/build
 
 # Expose port
