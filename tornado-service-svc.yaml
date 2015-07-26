@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tornadosvc
-  labels:
-    app: tornado-service
+  name: tornado-service
 spec:
-  ports:
-  - port: 10001
-    protocol: TCP
   selector:
     app: tornado-service
+    api: "1"
+  ports:
+  - name: default
+    protocol: TCP
+    port: 80
+    targetPort: 10001
