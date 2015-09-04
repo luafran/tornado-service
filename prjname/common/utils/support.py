@@ -1,6 +1,7 @@
 """
 Generic (domain agnostic) stuff to support application
 """
+import Queue
 import statsd
 
 from prjname.common import constants
@@ -38,36 +39,58 @@ class Support(object):
         if self._stats_enabled:
             self._stats_client = statsd.StatsClient(host=settings.STATS_SERVICE_HOSTNAME,
                                                     port=8125, prefix='prjname.' + environment)
+        self._messages_queue = Queue.Queue()
+        self.log_entire_request = settings.LOG_LEVEL in ['CRITICAL', 'ERROR']
+
+    def _log_entire_request(self, log_method):
+        try:
+            while True:
+                message = self._messages_queue.get_nowait()
+                log_method(message, extra=self._extra)
+        except Queue.Empty:
+            pass
 
     def notify_critical(self, message, details=None):
         """Notify a critical event"""
 
         self._extra['details'] = details if details else message
-        self._logger.critical(message, extra=self._extra)
+        log_method = self._logger.critical
+        if self.log_entire_request:
+            self._log_entire_request(log_method)
+        log_method(message, extra=self._extra)
 
     def notify_error(self, message, details=None):
         """Notify an error event"""
 
         self._extra['details'] = details if details else message
-        self._logger.error(message, extra=self._extra)
+        log_method = self._logger.error
+        if self.log_entire_request:
+            self._log_entire_request(log_method)
+        log_method(message, extra=self._extra)
 
     def notify_warning(self, message, details=None):
         """Notify a warning event"""
 
         self._extra['details'] = details if details else message
         self._logger.warning(message, extra=self._extra)
+        if self.log_entire_request:
+            self._messages_queue.put_nowait(message)
 
     def notify_info(self, message, details=None):
         """Notify an information event"""
 
         self._extra['details'] = details if details else message
         self._logger.info(message, extra=self._extra)
+        if self.log_entire_request:
+            self._messages_queue.put_nowait(message)
 
     def notify_debug(self, message, details=None):
         """Notify a debug event"""
 
         self._extra['details'] = details if details else message
         self._logger.debug(message, extra=self._extra)
+        if self.log_entire_request:
+            self._messages_queue.put_nowait(message)
 
     def stat_increment(self, stat, count=1, rate=1):
         if self._stats_enabled:
@@ -84,3 +107,7 @@ class Support(object):
     def stat_set(self, stat, value, rate=1):
         if self._stats_enabled:
             self._stats_client.set(stat, value, rate)
+
+    def stat_timing(self, stat, value, rate=1):
+        if self._stats_enabled:
+            self._stats_client.timing(stat, value, rate)
